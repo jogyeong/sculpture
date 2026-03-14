@@ -1,37 +1,187 @@
 <html>
-<head></head>
-<title>artspace</title>
+<head>
+<meta charset="UTF-8">
+<title>ArtSpace</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Georgia, serif; background: #fff; color: #222; }
+
+  /* 헤더 */
+  header {
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+  }
+  header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 공통 섹션 */
+  .section {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+  }
+
+  /* 작가 이미지 */
+  .artist-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+
+  /* 갤러리 제목 */
+  h2 {
+    font-size: 1.8em;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* 링크 */
+  .links {
+    margin-bottom: 16px;
+    font-size: 0.95em;
+    color: #555;
+  }
+  .links a {
+    margin-right: 16px;
+    color: #555;
+    text-decoration: none;
+    border-bottom: 1px solid #aaa;
+  }
+
+  /* 설명 */
+  .description {
+    font-size: 0.97em;
+    line-height: 1.9;
+    color: #333;
+    margin-bottom: 40px;
+  }
+
+  /* 갤러리 그리드: 가로 2 x 세로 9 */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 60px;
+  }
+  .gallery-grid img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  /* 구분선 */
+  hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 40px 0;
+  }
+
+  /* 푸터 */
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 0.85em;
+    color: #888;
+    border-top: 1px solid #eee;
+    line-height: 2;
+  }
+</style>
+</head>
 <body>
-img/artspace.jpg
-<pre>
 
-img/onsil.jpg
-Chang Onesil Gallery
-Critical Essays
-Biography
-장원실 작가는 철사와 합성수지(레진) 같은 차가운 공업 재료를 엮고 갈아내는 수행적 노동을 통해,
-'오래된 시'나 '자연'과 같은 서정적이고 따뜻한 은유의 세계를 구축합니다.
+<!-- 헤더 이미지 -->
+<header>
+  <img src="img/artscape.jpg" alt="ArtSpace">
+</header>
 
-평론가들은 그의 작품이 "물질적인 재료로 빚어낸 시적인 침묵"이라 평하며,
-겹겹이 쌓인 마티에르(질감) 속에 이야기를 숨겨두고 관람객이 스스로 그 여백을 채우게 만드는
-기다림의 미학을 높이 평가합니다.
+<!-- Chang Onesil Gallery -->
+<div class="section">
+  <img src="img/onsil.jpg" alt="Chang Onesil" class="artist-img">
+  <h2>Chang Onesil Gallery</h2>
+  <div class="links">
+    <a href="#">Critical Essays</a>
+    <a href="#">Biography</a>
+  </div>
+  <p class="description">
+    장원실 작가는 철사와 합성수지(레진) 같은 차가운 공업 재료를 엮고 갈아내는 수행적 노동을 통해,
+    '오래된 시'나 '자연'과 같은 서정적이고 따뜻한 은유의 세계를 구축합니다.<br><br>
+    평론가들은 그의 작품이 "물질적인 재료로 빚어낸 시적인 침묵"이라 평하며,
+    겹겹이 쌓인 마티에르(질감) 속에 이야기를 숨겨두고 관람객이 스스로 그 여백을 채우게 만드는
+    기다림의 미학을 높이 평가합니다.
+  </p>
 
+  <div class="gallery-grid">
+    <img src="img/onsil01.jpg" alt="Onsil 01">
+    <img src="img/onsil02.jpg" alt="Onsil 02">
+    <img src="img/onsil03.jpg" alt="Onsil 03">
+    <img src="img/onsil04.jpg" alt="Onsil 04">
+    <img src="img/onsil05.jpg" alt="Onsil 05">
+    <img src="img/onsil06.jpg" alt="Onsil 06">
+    <img src="img/onsil07.jpg" alt="Onsil 07">
+    <img src="img/onsil08.jpg" alt="Onsil 08">
+    <img src="img/onsil09.jpg" alt="Onsil 09">
+    <img src="img/onsil10.jpg" alt="Onsil 10">
+    <img src="img/onsil11.jpg" alt="Onsil 11">
+    <img src="img/onsil12.jpg" alt="Onsil 12">
+    <img src="img/onsil13.jpg" alt="Onsil 13">
+    <img src="img/onsil14.jpg" alt="Onsil 14">
+    <img src="img/onsil15.jpg" alt="Onsil 15">
+    <img src="img/onsil16.jpg" alt="Onsil 16">
+    <img src="img/onsil17.jpg" alt="Onsil 17">
+    <img src="img/onsil18.jpg" alt="Onsil 18">
+  </div>
+</div>
 
-gyeongin/gyeongin.jpg
-Park Gyeongin Gallery
-Critical Essays
-Biography
-박경인 작가는 화려한 색채와 대비되는 무심하고 건조한 인물의 표정을 통해 현대인의
-소외와 공허함을 포착한다는 평을 받습니다.
+<hr>
 
-평론가들은 특히 인물의 텅 빈 눈빛과 냉소적인 태도가 동시대의 불안과 욕망을
-투영하는 거울과 같다고 해석하며, 감각적인 붓터치로 인물의 미묘한 심리를 탁월하게 묘사한다고 평가합니다.
+<!-- Park Gyeongin Gallery -->
+<div class="section">
+  <img src="img/gyeongin.jpg" alt="Park Gyeongin" class="artist-img">
+  <h2>Park Gyeongin Gallery</h2>
+  <div class="links">
+    <a href="#">Critical Essays</a>
+    <a href="#">Biography</a>
+  </div>
+  <p class="description">
+    박경인 작가는 화려한 색채와 대비되는 무심하고 건조한 인물의 표정을 통해 현대인의
+    소외와 공허함을 포착한다는 평을 받습니다.<br><br>
+    평론가들은 특히 인물의 텅 빈 눈빛과 냉소적인 태도가 동시대의 불안과 욕망을
+    투영하는 거울과 같다고 해석하며, 감각적인 붓터치로 인물의 미묘한 심리를 탁월하게 묘사한다고 평가합니다.
+  </p>
 
+  <div class="gallery-grid">
+    <img src="img/gyeongin01.jpg" alt="Gyeongin 01">
+    <img src="img/gyeongin02.jpg" alt="Gyeongin 02">
+    <img src="img/gyeongin03.jpg" alt="Gyeongin 03">
+    <img src="img/gyeongin04.jpg" alt="Gyeongin 04">
+    <img src="img/gyeongin05.jpg" alt="Gyeongin 05">
+    <img src="img/gyeongin06.jpg" alt="Gyeongin 06">
+    <img src="img/gyeongin07.jpg" alt="Gyeongin 07">
+    <img src="img/gyeongin08.jpg" alt="Gyeongin 08">
+    <img src="img/gyeongin09.jpg" alt="Gyeongin 09">
+    <img src="img/gyeongin10.jpg" alt="Gyeongin 10">
+    <img src="img/gyeongin11.jpg" alt="Gyeongin 11">
+    <img src="img/gyeongin12.jpg" alt="Gyeongin 12">
+    <img src="img/gyeongin13.jpg" alt="Gyeongin 13">
+    <img src="img/gyeongin14.jpg" alt="Gyeongin 14">
+    <img src="img/gyeongin15.jpg" alt="Gyeongin 15">
+    <img src="img/gyeongin16.jpg" alt="Gyeongin 16">
+    <img src="img/gyeongin17.jpg" alt="Gyeongin 17">
+    <img src="img/gyeongin18.jpg" alt="Gyeongin 18">
+  </div>
+</div>
 
-경기도 양평군 양동면 고송리 912-1
-yuchaebat(a)hanmail.net   010-3874-3519
-Copyright ⓒ 2025 ArtSpace.kr. All rights reserved.
-</pre>
-</p>
+<!-- 푸터 -->
+<footer>
+  경기도 양평군 양동면 고송리 912-1<br>
+  yuchaebat(a)hanmail.net &nbsp;&nbsp; 010-3874-3519<br>
+  Copyright ⓒ 2025 ArtSpace.kr. All rights reserved.
+</footer>
+
 </body>
 </html>
