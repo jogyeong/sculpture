@@ -24,145 +24,272 @@
       background: #fff;
       color: var(--black);
       line-height: 1.8;
+      overflow-x: hidden;
     }
 
-    /* ── 네비게이션 ── */
+    /* ────────────────────────────
+       NAV
+    ──────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(255,255,255,0.96);
+      z-index: 200;
+      background: rgba(255,255,255,0.97);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
-      height: 56px;
+      padding: 0 48px;
+      height: 58px;
+      transition: box-shadow 0.3s;
     }
+    nav.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+
     .nav-logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3em;
+      font-size: 1.35em;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       color: var(--black);
       text-decoration: none;
+      text-transform: uppercase;
     }
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 36px;
       list-style: none;
     }
     .nav-links a {
-      font-size: 0.82em;
-      letter-spacing: 0.12em;
+      font-size: 0.78em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--gray);
       text-decoration: none;
       transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform 0.25s;
     }
     .nav-links a:hover { color: var(--black); }
+    .nav-links a:hover::after { transform: scaleX(1); }
 
-    /* ── 헤더 ── */
+    /* 햄버거 (모바일) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--black);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      z-index: 199;
+      padding: 20px 0;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block;
+      padding: 12px 32px;
+      font-size: 0.85em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+    }
+
+    /* ────────────────────────────
+       HERO
+    ──────────────────────────── */
     header {
-      margin-top: 56px;
+      margin-top: 58px;
       width: 100%;
-      height: calc(100vh - 56px);
+      height: calc(100vh - 58px);
       overflow: hidden;
       position: relative;
     }
-    header img {
+    .hero-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
     }
-    .header-overlay {
+    .hero-img.loaded { transform: scale(1); }
+
+    .hero-overlay {
       position: absolute;
-      bottom: 60px;
-      left: 60px;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%);
+    }
+    .hero-text {
+      position: absolute;
+      bottom: 72px;
+      left: 64px;
       color: #fff;
     }
-    .header-overlay h1 {
+    .hero-text h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3.2em;
+      font-size: 3.6em;
       font-weight: 300;
-      letter-spacing: 0.1em;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      letter-spacing: 0.12em;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.35);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s 0.3s, transform 1s 0.3s;
     }
-    .header-overlay p {
-      font-size: 0.95em;
+    .hero-text p {
+      font-size: 0.88em;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      opacity: 0;
+      margin-top: 10px;
+      transform: translateY(12px);
+      transition: opacity 1s 0.6s, transform 1s 0.6s;
+    }
+    .hero-text.visible h1,
+    .hero-text.visible p { opacity: 1; transform: translateY(0); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.72em;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      opacity: 0.85;
-      margin-top: 8px;
+      animation: bounce 2s infinite;
+    }
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.5);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
     }
 
-    /* ── 공통 섹션 ── */
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    section {
-      padding: 80px 0;
-    }
-
+    /* ────────────────────────────
+       공통
+    ──────────────────────────── */
     .section-divider {
       border: none;
       border-top: 1px solid var(--border);
-      margin: 0;
     }
 
-    /* ── 작가 섹션 헤더 ── */
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 36px;
+    }
+
+    section { padding: 88px 0; }
+
+    /* fade-in on scroll */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ────────────────────────────
+       ARTIST HEADER
+    ──────────────────────────── */
     .artist-header {
       display: flex;
-      gap: 48px;
+      gap: 52px;
       align-items: flex-start;
-      margin-bottom: 48px;
+      margin-bottom: 52px;
     }
-    .artist-header img {
+    .artist-photo-wrap {
+      position: relative;
+      flex-shrink: 0;
       width: 280px;
+    }
+    .artist-photo-wrap img {
+      width: 100%;
       height: 340px;
       object-fit: cover;
-      flex-shrink: 0;
+      display: block;
     }
-    .artist-intro {
-      flex: 1;
-      padding-top: 8px;
+    .artist-photo-wrap::after {
+      content: '';
+      position: absolute;
+      top: 10px; left: 10px;
+      right: -10px; bottom: -10px;
+      border: 1px solid var(--accent);
+      z-index: -1;
     }
+    .artist-intro { flex: 1; padding-top: 8px; }
     .artist-intro .label {
-      font-size: 0.75em;
-      letter-spacing: 0.2em;
+      font-size: 0.72em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 10px;
     }
     .artist-intro h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.4em;
+      font-size: 2.5em;
       font-weight: 400;
-      letter-spacing: 0.05em;
-      margin-bottom: 20px;
-      line-height: 1.3;
+      letter-spacing: 0.06em;
+      margin-bottom: 22px;
+      line-height: 1.25;
     }
-    .artist-intro .description {
-      font-size: 0.95em;
+    .artist-intro .desc {
+      font-size: 0.93em;
       color: var(--gray);
-      line-height: 2;
+      line-height: 2.1;
     }
 
-    /* ── 탭 네비게이션 ── */
+    /* ────────────────────────────
+       TAB
+    ──────────────────────────── */
     .tab-nav {
       display: flex;
-      gap: 0;
       border-bottom: 2px solid var(--border);
-      margin-bottom: 40px;
+      margin-bottom: 44px;
     }
     .tab-btn {
-      padding: 12px 28px;
-      font-size: 0.82em;
-      letter-spacing: 0.12em;
+      padding: 13px 30px;
+      font-size: 0.78em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--gray);
       cursor: pointer;
@@ -171,66 +298,188 @@
       border-bottom: 2px solid transparent;
       margin-bottom: -2px;
       font-family: inherit;
-      transition: all 0.2s;
+      transition: color 0.2s, border-color 0.2s;
     }
+    .tab-btn:hover { color: var(--black); }
     .tab-btn.active {
       color: var(--black);
       border-bottom-color: var(--black);
     }
 
-    /* ── 탭 콘텐츠 ── */
-    .tab-content { display: none; }
+    .tab-content {
+      display: none;
+      animation: fadeTab 0.35s ease;
+    }
     .tab-content.active { display: block; }
+    @keyframes fadeTab {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    /* ── 갤러리 그리드 ── */
+    /* ────────────────────────────
+       GALLERY GRID
+    ──────────────────────────── */
     .gallery-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
     }
-    .gallery-grid img {
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+    .gallery-item img {
       width: 100%;
       aspect-ratio: 4 / 3;
       object-fit: cover;
       display: block;
-      transition: opacity 0.3s;
+      transition: transform 0.45s ease, filter 0.3s;
     }
-    .gallery-grid img:hover { opacity: 0.88; }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+      filter: brightness(0.88);
+    }
+    .gallery-item .zoom-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      color: #fff;
+      font-size: 1.8em;
+      pointer-events: none;
+    }
+    .gallery-item:hover .zoom-icon { opacity: 1; }
 
-    /* ── 평론 ── */
+    /* ────────────────────────────
+       LIGHTBOX
+    ──────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.94);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #lightbox.open { display: flex; }
+
+    .lb-img-wrap {
+      position: relative;
+      max-width: 88vw;
+      max-height: 82vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #lb-img {
+      max-width: 88vw;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.25s, transform 0.25s;
+      border: none;
+    }
+    #lb-img.fade { opacity: 0; transform: scale(0.97); }
+
+    .lb-close {
+      position: fixed;
+      top: 24px; right: 32px;
+      color: #fff;
+      font-size: 2em;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+      background: none;
+      border: none;
+      z-index: 1001;
+    }
+    .lb-close:hover { opacity: 1; }
+
+    .lb-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 1.6em;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 1001;
+    }
+    .lb-arrow:hover { background: rgba(255,255,255,0.22); }
+    #lb-prev { left: 20px; }
+    #lb-next { right: 20px; }
+
+    .lb-counter {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.5);
+      font-size: 0.78em;
+      letter-spacing: 0.14em;
+    }
+
+    /* ────────────────────────────
+       ESSAY
+    ──────────────────────────── */
     .essay-box {
       background: var(--light);
-      padding: 48px 52px;
-      margin-bottom: 32px;
-    }
-    .essay-box .essay-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5em;
-      font-weight: 400;
-      margin-bottom: 6px;
-      letter-spacing: 0.03em;
-    }
-    .essay-box .essay-title-kr {
-      font-size: 0.88em;
-      color: var(--gray);
+      padding: 52px 56px;
       margin-bottom: 28px;
     }
-    .essay-box p {
+    .essay-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45em;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+    }
+    .essay-kr {
+      font-size: 0.86em;
+      color: var(--gray);
+      margin-bottom: 30px;
+    }
+    .essay-body p {
       font-size: 0.93em;
       color: #444;
-      line-height: 2.1;
-      margin-bottom: 16px;
+      line-height: 2.15;
+      margin-bottom: 18px;
     }
-    .essay-box p:last-child { margin-bottom: 0; }
+    .essay-body p:last-child { margin-bottom: 0; }
 
-    /* ── 바이오그래피 ── */
+    /* ────────────────────────────
+       BIOGRAPHY
+    ──────────────────────────── */
+    .bio-basic {
+      font-size: 0.9em;
+      color: var(--gray);
+      line-height: 2.3;
+      margin-bottom: 40px;
+      padding: 26px 34px;
+      border-left: 3px solid var(--accent);
+      background: var(--light);
+    }
     .bio-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 44px;
     }
     .bio-block h4 {
-      font-size: 0.78em;
+      font-size: 0.74em;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
@@ -240,84 +489,106 @@
     }
     .bio-block ul {
       list-style: none;
-      font-size: 0.88em;
+      font-size: 0.87em;
       color: var(--gray);
-      line-height: 2.2;
+      line-height: 2.3;
     }
     .bio-block ul li::before {
-      content: '—  ';
-      color: var(--border);
-    }
-    .bio-basic {
-      font-size: 0.9em;
-      color: var(--gray);
-      line-height: 2.2;
-      margin-bottom: 40px;
-      padding: 24px 32px;
-      border-left: 3px solid var(--accent);
-      background: var(--light);
+      content: '— ';
+      color: #ccc;
     }
 
-    /* ── 푸터 ── */
+    /* ────────────────────────────
+       FOOTER
+    ──────────────────────────── */
     footer {
       background: var(--black);
-      color: #aaa;
+      color: #888;
       text-align: center;
-      padding: 48px 20px;
+      padding: 52px 20px;
       font-size: 0.82em;
       letter-spacing: 0.08em;
-      line-height: 2.2;
+      line-height: 2.3;
     }
-    footer a { color: #aaa; text-decoration: none; }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5em;
+      letter-spacing: 0.18em;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    footer a { color: #888; text-decoration: none; }
+    footer a:hover { color: #ccc; }
 
-    /* ── 반응형 ── */
-    @media (max-width: 700px) {
-      nav { padding: 0 20px; }
-      .nav-links { gap: 16px; }
-      .header-overlay { left: 24px; bottom: 40px; }
-      .header-overlay h1 { font-size: 2em; }
+    /* ────────────────────────────
+       반응형
+    ──────────────────────────── */
+    @media (max-width: 720px) {
+      nav { padding: 0 22px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-text { left: 28px; bottom: 56px; }
+      .hero-text h1 { font-size: 2.2em; }
       .artist-header { flex-direction: column; }
-      .artist-header img { width: 100%; height: 260px; }
-      .bio-grid { grid-template-columns: 1fr; gap: 32px; }
+      .artist-photo-wrap { width: 100%; }
+      .artist-photo-wrap img { height: 260px; width: 100%; }
+      .bio-grid { grid-template-columns: 1fr; gap: 30px; }
       .essay-box { padding: 32px 24px; }
       .container { padding: 0 20px; }
+      .gallery-grid { gap: 8px; }
+      #lb-prev { left: 8px; }
+      #lb-next { right: 8px; }
     }
   </style>
 </head>
 <body>
 
-<!-- 네비게이션 -->
-<nav>
+<!-- ── 네비게이션 ── -->
+<nav id="navbar">
   <a class="nav-logo" href="#">ArtSpace</a>
   <ul class="nav-links">
     <li><a href="#onesil">Chang Onesil</a></li>
     <li><a href="#gyeongin">Park Gyeongin</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- 헤더 이미지 -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#onesil"  onclick="closeMobile()">Chang Onesil</a>
+  <a href="#gyeongin" onclick="closeMobile()">Park Gyeongin</a>
+  <a href="#contact"  onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- ── 헤더 ── -->
 <header>
-  <img src="img/head.jpg" alt="ArtSpace">
-  <div class="header-overlay">
+  <img class="hero-img" src="img/head.jpg" alt="ArtSpace" id="heroImg">
+  <div class="hero-overlay"></div>
+  <div class="hero-text" id="heroText">
     <h1>ArtSpace</h1>
-    <p>Gallery · Yangpyeong</p>
+    <p>Gallery &middot; Yangpyeong</p>
   </div>
+  <div class="scroll-hint">Scroll</div>
 </header>
 
 <hr class="section-divider">
 
-<!-- ══ Chang Onesil ══ -->
+<!-- ════════════════════════════
+     Chang Onesil
+════════════════════════════ -->
 <section id="onesil">
   <div class="container">
 
-    <!-- 작가 소개 -->
-    <div class="artist-header">
-      <img src="img/onesil.jpg" alt="Chang Onesil">
+    <div class="artist-header fade-in">
+      <div class="artist-photo-wrap">
+        <img src="img/onesil.jpg" alt="Chang Onesil">
+      </div>
       <div class="artist-intro">
-        <p class="label">Gallery</p>
+        <p class="label">Artist</p>
         <h2>Chang Onesil<br>장 원 실</h2>
-        <p class="description">
+        <p class="desc">
           장원실 작가는 철사와 합성수지(레진) 같은 차가운 공업 재료를 엮고 갈아내는 수행적 노동을 통해,
           '오래된 시'나 '자연'과 같은 서정적이고 따뜻한 은유의 세계를 구축합니다.<br><br>
           평론가들은 그의 작품이 "물질적인 재료로 빚어낸 시적인 침묵"이라 평하며,
@@ -327,62 +598,55 @@
       </div>
     </div>
 
-    <!-- 탭 -->
-    <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('onesil', 'gallery', this)">Gallery</button>
-      <button class="tab-btn" onclick="switchTab('onesil', 'essay', this)">Critical Essays</button>
-      <button class="tab-btn" onclick="switchTab('onesil', 'bio', this)">Biography</button>
+    <div class="tab-nav fade-in">
+      <button class="tab-btn active" data-artist="onesil" data-tab="gallery">Gallery</button>
+      <button class="tab-btn" data-artist="onesil" data-tab="essay">Critical Essays</button>
+      <button class="tab-btn" data-artist="onesil" data-tab="bio">Biography</button>
     </div>
 
     <!-- Gallery -->
     <div id="onesil-gallery" class="tab-content active">
-      <div class="gallery-grid">
-        <img src="img/onesil01.jpg" alt="Onesil 01">
-        <img src="img/onesil02.jpg" alt="Onesil 02">
-        <img src="img/onesil03.jpg" alt="Onesil 03">
-        <img src="img/onesil04.jpg" alt="Onesil 04">
-        <img src="img/onesil05.jpg" alt="Onesil 05">
-        <img src="img/onesil06.jpg" alt="Onesil 06">
-        <img src="img/onesil07.jpg" alt="Onesil 07">
-        <img src="img/onesil08.jpg" alt="Onesil 08">
-        <img src="img/onesil09.jpg" alt="Onesil 09">
-        <img src="img/onesil10.jpg" alt="Onesil 10">
-        <img src="img/onesil11.jpg" alt="Onesil 11">
-        <img src="img/onesil12.jpg" alt="Onesil 12">
-        <img src="img/onesil13.jpg" alt="Onesil 13">
-        <img src="img/onesil14.jpg" alt="Onesil 14">
-        <img src="img/onesil15.jpg" alt="Onesil 15">
-        <img src="img/onesil16.jpg" alt="Onesil 16">
-        <img src="img/onesil17.jpg" alt="Onesil 17">
-        <img src="img/onesil18.jpg" alt="Onesil 18">
+      <div class="gallery-grid" data-group="onesil">
+        <div class="gallery-item"><img src="img/onesil01.jpg" alt="No.1"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil02.jpg" alt="No.2"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil03.jpg" alt="No.3"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil04.jpg" alt="No.4"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil05.jpg" alt="No.5"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil06.jpg" alt="No.6"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil07.jpg" alt="No.7"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil08.jpg" alt="No.8"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil09.jpg" alt="No.9"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil10.jpg" alt="No.10"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil11.jpg" alt="No.11"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil12.jpg" alt="No.12"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil13.jpg" alt="No.13"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil14.jpg" alt="No.14"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil15.jpg" alt="No.15"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil16.jpg" alt="No.16"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil17.jpg" alt="No.17"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/onesil18.jpg" alt="No.18"><div class="zoom-icon">&#x2922;</div></div>
       </div>
     </div>
 
     <!-- Critical Essays -->
     <div id="onesil-essay" class="tab-content">
       <div class="essay-box">
-        <p class="essay-title">Resonance of Silence</p>
-        <p class="essay-title-kr">침묵의 공명(共鳴)</p>
-        <p>
-          장원실은 2002년 경기도 양평의 숲속으로 거처를 옮긴 이후, 도시의 속도와 소음으로부터 스스로를 격리하며
+        <p class="essay-en">Resonance of Silence</p>
+        <p class="essay-kr">침묵의 공명(共鳴)</p>
+        <div class="essay-body">
+          <p>장원실은 2002년 경기도 양평의 숲속으로 거처를 옮긴 이후, 도시의 속도와 소음으로부터 스스로를 격리하며
           오롯이 재료와의 대화에 집중해왔다. 그녀의 작업실은 고립된 수도원과 같다.
-          캔버스는 매끄러운 환영(幻影)이 아니라 노동의 땀과 시간이 켜켜이 쌓인 장(場)으로 기능한다.
-        </p>
-        <p>
-          그녀는 건축 현장에서 쓰이는 얇은 철사를 불에 그슬려 경직성을 부드럽게 완화한 뒤,
+          캔버스는 매끄러운 환영(幻影)이 아니라 노동의 땀과 시간이 켜켜이 쌓인 장(場)으로 기능한다.</p>
+          <p>그녀는 건축 현장에서 쓰이는 얇은 철사를 불에 그슬려 경직성을 부드럽게 완화한 뒤,
           이를 화면 위에 층층이 올려 골격을 만든다. 그 위에 흙·모래·합성수지를 덧대고
           다시 표면을 갈아내는 '감산(減算)의 조각 행위'는 고고학적 발굴이나 자연의 풍화 과정과 닮아 있다.
-          차가운 공업 재료에 따뜻함을 불어넣는 이 역설적 과정이 바로 그녀 예술의 핵심이다.
-        </p>
-        <p>
-          작가는 자신의 화면 전체를 "소중한 기억을 보존하기 위한 거대한 섀도박스(shadow box)"로 규정한다.
+          차가운 공업 재료에 따뜻함을 불어넣는 이 역설적 과정이 바로 그녀 예술의 핵심이다.</p>
+          <p>작가는 자신의 화면 전체를 "소중한 기억을 보존하기 위한 거대한 섀도박스(shadow box)"로 규정한다.
           레진 속에 영구히 봉인된 자연의 파편들—나뭇조각, 흙, 풀—은 되돌릴 수 없는 순간들의 시각적 환유(換喩)다.
-          상처와 세월의 무게를 품은 나무의 결이 특히 그녀의 관심을 끄는 것도 이 때문이다.
-        </p>
-        <p>
-          결국 장원실의 실천은 디지털 속도 문화에 맞서 '느림과 무거움'을 옹호한다.
-          그녀에게 회화는 "뜨거운 기도"이자 공동의 기억을 위한 "따뜻한 치유의 손길"이다.
-        </p>
+          상처와 세월의 무게를 품은 나무의 결이 특히 그녀의 관심을 끄는 것도 이 때문이다.</p>
+          <p>결국 장원실의 실천은 디지털 속도 문화에 맞서 '느림과 무거움'을 옹호한다.
+          그녀에게 회화는 "뜨거운 기도"이자 공동의 기억을 위한 "따뜻한 치유의 손길"이다.</p>
+        </div>
       </div>
     </div>
 
@@ -427,17 +691,20 @@
 
 <hr class="section-divider">
 
-<!-- ══ Park Gyeongin ══ -->
+<!-- ════════════════════════════
+     Park Gyeongin
+════════════════════════════ -->
 <section id="gyeongin">
   <div class="container">
 
-    <!-- 작가 소개 -->
-    <div class="artist-header">
-      <img src="img/gyeongin.jpg" alt="Park Gyeongin">
+    <div class="artist-header fade-in">
+      <div class="artist-photo-wrap">
+        <img src="img/gyeongin.jpg" alt="Park Gyeongin">
+      </div>
       <div class="artist-intro">
-        <p class="label">Gallery</p>
+        <p class="label">Artist</p>
         <h2>Park Gyeongin<br>박 경 인</h2>
-        <p class="description">
+        <p class="desc">
           박경인 작가는 화려한 색채와 대비되는 무심하고 건조한 인물의 표정을 통해
           현대인의 소외와 공허함을 포착한다는 평을 받습니다.<br><br>
           평론가들은 특히 인물의 텅 빈 눈빛과 냉소적인 태도가 동시대의 불안과 욕망을
@@ -447,60 +714,55 @@
       </div>
     </div>
 
-    <!-- 탭 -->
-    <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('gyeongin', 'gallery', this)">Gallery</button>
-      <button class="tab-btn" onclick="switchTab('gyeongin', 'essay', this)">Critical Essays</button>
-      <button class="tab-btn" onclick="switchTab('gyeongin', 'bio', this)">Biography</button>
+    <div class="tab-nav fade-in">
+      <button class="tab-btn active" data-artist="gyeongin" data-tab="gallery">Gallery</button>
+      <button class="tab-btn" data-artist="gyeongin" data-tab="essay">Critical Essays</button>
+      <button class="tab-btn" data-artist="gyeongin" data-tab="bio">Biography</button>
     </div>
 
     <!-- Gallery -->
     <div id="gyeongin-gallery" class="tab-content active">
-      <div class="gallery-grid">
-        <img src="img/gyeongin01.jpg" alt="Gyeongin 01">
-        <img src="img/gyeongin02.jpg" alt="Gyeongin 02">
-        <img src="img/gyeongin03.jpg" alt="Gyeongin 03">
-        <img src="img/gyeongin04.jpg" alt="Gyeongin 04">
-        <img src="img/gyeongin05.jpg" alt="Gyeongin 05">
-        <img src="img/gyeongin06.jpg" alt="Gyeongin 06">
-        <img src="img/gyeongin07.jpg" alt="Gyeongin 07">
-        <img src="img/gyeongin08.jpg" alt="Gyeongin 08">
-        <img src="img/gyeongin09.jpg" alt="Gyeongin 09">
-        <img src="img/gyeongin10.jpg" alt="Gyeongin 10">
-        <img src="img/gyeongin11.jpg" alt="Gyeongin 11">
-        <img src="img/gyeongin12.jpg" alt="Gyeongin 12">
-        <img src="img/gyeongin13.jpg" alt="Gyeongin 13">
-        <img src="img/gyeongin14.jpg" alt="Gyeongin 14">
-        <img src="img/gyeongin15.jpg" alt="Gyeongin 15">
-        <img src="img/gyeongin16.jpg" alt="Gyeongin 16">
-        <img src="img/gyeongin17.jpg" alt="Gyeongin 17">
-        <img src="img/gyeongin18.jpg" alt="Gyeongin 18">
+      <div class="gallery-grid" data-group="gyeongin">
+        <div class="gallery-item"><img src="img/gyeongin01.jpg" alt="No.1"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin02.jpg" alt="No.2"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin03.jpg" alt="No.3"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin04.jpg" alt="No.4"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin05.jpg" alt="No.5"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin06.jpg" alt="No.6"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin07.jpg" alt="No.7"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin08.jpg" alt="No.8"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin09.jpg" alt="No.9"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin10.jpg" alt="No.10"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin11.jpg" alt="No.11"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin12.jpg" alt="No.12"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin13.jpg" alt="No.13"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin14.jpg" alt="No.14"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin15.jpg" alt="No.15"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin16.jpg" alt="No.16"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin17.jpg" alt="No.17"><div class="zoom-icon">&#x2922;</div></div>
+        <div class="gallery-item"><img src="img/gyeongin18.jpg" alt="No.18"><div class="zoom-icon">&#x2922;</div></div>
       </div>
     </div>
 
     <!-- Critical Essays -->
     <div id="gyeongin-essay" class="tab-content">
       <div class="essay-box">
-        <p class="essay-title">Beyond the Wall of Silence, Meeting Your Gaze</p>
-        <p class="essay-title-kr">침묵의 담장을 넘어, 너의 시선을 마주하다</p>
-        <p>
-          박경인의 그림 앞에 서면 인물이 커다란 눈망울로 나를 응시하고 있다.
+        <p class="essay-en">Beyond the Wall of Silence, Meeting Your Gaze</p>
+        <p class="essay-kr">침묵의 담장을 넘어, 너의 시선을 마주하다</p>
+        <div class="essay-body">
+          <p>박경인의 그림 앞에 서면 인물이 커다란 눈망울로 나를 응시하고 있다.
           그것은 단순한 시선의 교환이 아니다. 그림 속 인물의 눈은 도시의 소음을 뚫고
           조용한 안식처로 이끄는 심리적 거울이다. 인물들은 대체로 성별의 경계가 모호한
-          중성적 존재로, 보는 이의 내면을 투명하게 꿰뚫는 불편한 투명성을 지닌다.
-        </p>
-        <p>
-          눈이 과잉된 감정을 담고 있다면, 입은 철저한 절제를 보여준다.
+          중성적 존재로, 보는 이의 내면을 투명하게 꿰뚫는 불편한 투명성을 지닌다.</p>
+          <p>눈이 과잉된 감정을 담고 있다면, 입은 철저한 절제를 보여준다.
           말해야 할 것들이 말해지지 못한 채 응축된 침묵—그것이 박경인 인물화의
           심리적 긴장을 만드는 근원이다. 화면 위 밝고 경쾌한 파스텔 색채는
-          이 멜랑콜리를 역설적으로 감싸는 포장지다. 화사한 껍데기 아래 더 깊은 공허가 있다.
-        </p>
-        <p>
-          배경이 제거된 인물들은 공간으로부터 고립되어 있다.
+          이 멜랑콜리를 역설적으로 감싸는 포장지다. 화사한 껍데기 아래 더 깊은 공허가 있다.</p>
+          <p>배경이 제거된 인물들은 공간으로부터 고립되어 있다.
           초연결 시대의 역설적 단절—그것이 작가가 포착하려는 현대적 자아의 초상이다.
           그러나 박경인의 작품이 궁극적으로 건네는 것은 절망이 아니라,
-          공유된 취약함을 통한 조용한 위안이다.
-        </p>
+          공유된 취약함을 통한 조용한 위안이다.</p>
+        </div>
       </div>
     </div>
 
@@ -548,24 +810,153 @@
 
 <hr class="section-divider">
 
-<!-- 푸터 -->
+<!-- ── 푸터 ── -->
 <footer id="contact">
-  <p style="font-family:'Cormorant Garamond',serif; font-size:1.4em; letter-spacing:0.15em; color:#fff; margin-bottom:16px;">ArtSpace</p>
+  <p class="footer-logo">ArtSpace</p>
   경기도 양평군 양동면 고송리 912-1<br>
-  <a href="mailto:yuchaebat@hanmail.net">yuchaebat(a)hanmail.net</a> &nbsp;|&nbsp; 010-3874-3519<br><br>
-  Copyright ⓒ 2025 ArtSpace.kr. All rights reserved.
+  <a href="mailto:yuchaebat@hanmail.net">yuchaebat(a)hanmail.net</a>
+  &nbsp;|&nbsp; 010-3874-3519<br><br>
+  Copyright &copy; 2025 ArtSpace.kr. All rights reserved.
 </footer>
 
+<!-- ── 라이트박스 ── -->
+<div id="lightbox">
+  <button class="lb-close" id="lbClose">&times;</button>
+  <button class="lb-arrow" id="lb-prev">&#8592;</button>
+  <div class="lb-img-wrap">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <button class="lb-arrow" id="lb-next">&#8594;</button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
 <script>
-  function switchTab(artist, tab, btn) {
-    // 모든 탭 콘텐츠 숨기기
-    document.querySelectorAll('[id^="' + artist + '-"]').forEach(el => el.classList.remove('active'));
-    // 해당 탭 버튼 비활성화
-    btn.closest('.tab-nav').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    // 선택한 탭 활성화
-    document.getElementById(artist + '-' + tab).classList.add('active');
-    btn.classList.add('active');
+  /* ═══════════════════════════════════
+     1. 내비게이션 스크롤 효과
+  ═══════════════════════════════════ */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* ═══════════════════════════════════
+     2. 햄버거 메뉴
+  ═══════════════════════════════════ */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
   }
+
+  /* ═══════════════════════════════════
+     3. 히어로 이미지 Ken Burns + 텍스트 등장
+  ═══════════════════════════════════ */
+  const heroImg = document.getElementById('heroImg');
+  const heroText = document.getElementById('heroText');
+  heroImg.addEventListener('load', () => {
+    heroImg.classList.add('loaded');
+    heroText.classList.add('visible');
+  });
+  if (heroImg.complete) {
+    heroImg.classList.add('loaded');
+    heroText.classList.add('visible');
+  }
+
+  /* ═══════════════════════════════════
+     4. 스크롤 fade-in
+  ═══════════════════════════════════ */
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  /* ═══════════════════════════════════
+     5. 탭 전환
+  ═══════════════════════════════════ */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const artist = btn.dataset.artist;
+      const tab    = btn.dataset.tab;
+      // 탭 버튼
+      btn.closest('.tab-nav').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // 탭 콘텐츠
+      document.querySelectorAll(`[id^="${artist}-"]`).forEach(el => el.classList.remove('active'));
+      document.getElementById(`${artist}-${tab}`).classList.add('active');
+    });
+  });
+
+  /* ═══════════════════════════════════
+     6. 라이트박스
+  ═══════════════════════════════════ */
+  const lightbox  = document.getElementById('lightbox');
+  const lbImg     = document.getElementById('lb-img');
+  const lbCounter = document.getElementById('lb-counter');
+  let currentGroup = [];
+  let currentIdx   = 0;
+
+  function openLightbox(group, idx) {
+    currentGroup = group;
+    currentIdx   = idx;
+    showImage(idx);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showImage(idx) {
+    lbImg.classList.add('fade');
+    setTimeout(() => {
+      lbImg.src = currentGroup[idx];
+      lbImg.classList.remove('fade');
+    }, 220);
+    lbCounter.textContent = `${idx + 1} / ${currentGroup.length}`;
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function moveLightbox(dir) {
+    currentIdx = (currentIdx + dir + currentGroup.length) % currentGroup.length;
+    showImage(currentIdx);
+  }
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => moveLightbox(-1));
+  document.getElementById('lb-next').addEventListener('click', () => moveLightbox(1));
+
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+  // 키보드
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  moveLightbox(-1);
+    if (e.key === 'ArrowRight') moveLightbox(1);
+    if (e.key === 'Escape')     closeLightbox();
+  });
+
+  // 터치 스와이프
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  lightbox.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) moveLightbox(dx < 0 ? 1 : -1);
+  });
+
+  // 갤러리 아이템 클릭 연결
+  document.querySelectorAll('.gallery-grid').forEach(grid => {
+    const items = Array.from(grid.querySelectorAll('.gallery-item img'));
+    const srcs  = items.map(img => img.src);
+    items.forEach((img, i) => {
+      img.parentElement.addEventListener('click', () => openLightbox(srcs, i));
+    });
+  });
 </script>
 
 </body>
